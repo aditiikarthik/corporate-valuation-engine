@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VALUSTRAT // DCF TERMINAL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --pink-bg: #ffb8d9;
+      --pink-card: #ffa1cc;
+      --black: #0c0a09;
+      --white: #ffffff;
+      --cyan: #a5f3fc;
+      --yellow: #fef08a;
+      --green: #86efac;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--black);
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--black);
+      padding: 30px 16px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .zine-poster {
+      background-color: var(--pink-bg);
+      width: 100%;
+      max-width: 650px;
+      border: 3px solid var(--black);
+      border-radius: 4px;
+      box-shadow: 10px 10px 0px #000;
+      padding: 24px;
+      position: relative;
+    }
+
+    .star-accent {
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .top-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase; 
+      font-weight: 700;
+      border-bottom: 2px solid var(--black);
+      padding-bottom: 8px;
+    }
+
+    .pill-tag {
+      background: var(--black);
+      color: var(--white);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+    }
+
+    .hero {
+      margin: 18px 0 14px 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    .hero-title {
+      font-size: 58px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 0.95;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      text-shadow: 3px 3px 0px var(--white);
+    }
+
+    .hero-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--white);
+      display: inline-block;
+      padding: 4px 12px;
+      border: 2px solid var(--black);
+      box-shadow: 3px 3px 0px var(--black);
+      transform: rotate(-1.5deg);
+    }
+
+    .action-bar {
+      border-top: 2px solid var(--black);
+      border-bottom: 2px solid var(--black);
+      padding: 6px 0;
+      margin: 18px 0;
+      text-align: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .field-card {
+      background: var(--white);
+      border: 2px solid var(--black);
+      border-radius: 2px;
+      padding: 10px 12px;
+      box-shadow: 3px 3px 0px var(--black);
+    }
+
+    .tilt-left { transform: rotate(-0.6deg); }
+    .tilt-right { transform: rotate(0.6deg); }
+
+    .field-label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .field-input {
+      width: 100%;
+      background: #fafafa;
+      border: 1.5px solid var(--black);
+      padding: 6px 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--black);
+      outline: none;
+    }
+
+    .field-input:focus { 
+      background: var(--yellow);
+    }
+
+    .calculate-btn {
+      width: 100%;
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 14px;
+      border: 2px solid var(--black);
+      border-radius: 4px;
+      cursor: pointer;
+      box-shadow: 5px 5px 0px var(--white);
+      transition: all 0.1s ease;
+      margin-bottom: 20px;
+    }
+
+    .calculate-btn:hover {
+      background: var(--yellow);
+      color: var(--black);
+      box-shadow: 5px 5px 0px var(--black);
+    }
+
+    .calculate-btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 3px 3px 0px var(--black);
+    }
+
+    .results-board {
+      background: var(--black);
+      border-radius: 4px;
+      padding: 18px;
+      color: var(--white);
+    }
+
+    .results-header {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--pink-bg);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .target-sticker {
+      background: var(--yellow);
+      color: var(--black);
+      border: 2px solid var(--white);
+      padding: 14px;
+      text-align: center;
+      box-shadow: 5px 5px 0px rgba(255, 255, 255, 0.4);
+      margin-bottom: 14px;
+      transform: rotate(-1deg);
+    }
+
+    .target-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .target-price {
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1.1;
+      margin: 4px 0;
+    }
+
+    .metrics-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .sub-metric {
+      background: #1c1917;
+      border: 1px dashed #57534e;
+      padding: 10px;
+    }
+
+    .sub-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      text-transform: uppercase;
+      color: #a8a29e;
+    }
+
+    .sub-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--cyan);
+      margin-top: 3px;
+    }
+
+    .footer-capsule {
+      margin-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      color: var(--black);
+      border-top: 1.5px solid var(--black);
+      padding-top: 8px;
+    } 
+  </style>
+</head>
+<body>
+
+  <div class="zine-poster">
+    <svg class="star-accent" style="top: 18px; right: 18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <path d="M12 2L13.5 9.5L21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9.5L12 2Z" fill="#a5f3fc"/>
+    </svg>
+
+    <div class="top-meta">
+      <span>FIG. 01 // EQUITY RESEARCH</span>
+      <span class="pill-tag">BSE/NSE VALUATION</span>
+      <span>EDITION: 2026</span>
+    </div>
+
+    <div class="hero">
+      <div class="hero-eyebrow">UNLEVERED DISCOUNTED CASH FLOW</div>
+      <h1 class="hero-title">VALUSTRAT</h1>
+      <div class="hero-sub">WHERE DCF MEETS CORPORATE BENCHMARKING</div>
+    </div>
+
+    <div class="action-bar">
+      &larr; INPUT PARAMETERS // 5-YEAR PROJECTION &rarr;
+    </div>
+
+    <div class="grid-container">
+      <div class="field-card tilt-left">
+        <label class="field-label">Base FCF (₹ Cr)</label>
+        <input type="number" id="fcf" class="field-input" value="22000">
+      </div>
+      <div class="field-card tilt-right">
+        <label class="field-label">5-Yr Growth Rate (%)</label>
+        <input type="number" id="growth" class="field-input" value="10.0">
+      </div>
+      <div class="field-card tilt-right">
+        <label class="field-label">Terminal Growth (%)</label>
+        <input type="number" id="tg" class="field-input" value="4.5">
+      </div>
+      <div class="field-card tilt-left">
+        <label class="field-label">Cost of Capital / WACC (%)</label>
+        <input type="number" id="wacc" class="field-input" value="11.5">
+      </div>
+      <div class="field-card tilt-left">
+        <label class="field-label">Total Debt (₹ Cr)</label>
+        <input type="number" id="debt" class="field-input" value="8000">
+      </div>
+      <div class="field-card tilt-right">
+        <label class="field-label">Cash & Liquid Inv. (₹ Cr)</label>
+        <input type="number" id="cash" class="field-input" value="14000">
+      </div>
+      <div class="field-card tilt-left" style="grid-column: span 2;">
+        <label class="field-label">Shares Outstanding (Cr)</label>
+        <input type="number" id="shares" class="field-input" value="415">
+      </div>
+    </div>
+
+    <button type="button" class="calculate-btn" id="calcBtn">RUN DCF MODEL &rarr;</button>
+
+    <div class="results-board">
+      <div class="results-header">
+        <span>VALUATION OUTPUT</span>
+        <span>STATUS: LIVE</span>
+      </div>
+
+      <div class="target-sticker">
+        <div class="target-title">IMPLIED TARGET SHARE PRICE</div>
+        <div class="target-price" id="targetPrice">₹0.00</div>
+        <div style="font-family: 'Space Mono', monospace; font-size: 10px; font-weight: bold;">
+          INTRINSIC VALUE PER SHARE
+        </div>
+      </div>
+
+      <div class="metrics-row">
+        <div class="sub-metric">
+          <div class="sub-label">ENTERPRISE VALUE</div>
+          <div class="sub-value" id="evVal">₹0 Cr</div>
+        </div>
+        <div class="sub-metric">
+          <div class="sub-label">EQUITY VALUE</div>
+          <div class="sub-value" id="eqVal">₹0 Cr</div>
+        </div>
+        <div class="sub-metric">
+          <div class="sub-label">PV OF 5-YR CASH FLOWS</div>
+          <div class="sub-value" id="pvFcfVal">₹0 Cr</div>
+        </div>
+        <div class="sub-metric">
+          <div class="sub-label">PV OF TERMINAL VALUE</div>
+          <div class="sub-value" id="pvTvVal">₹0 Cr</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-capsule">
+      <span>DESIGNED FOR INTERVIEW PORTFOLIO</span>
+      <span>AUTOMATED VALUATION ENGINE</span>
+    </div>
+  </div>
+
+  <script>
+    function executeValuation() {
+      var fcf = parseFloat(document.getElementById('fcf').value) || 0;
+      var g = (parseFloat(document.getElementById('growth').value) || 0) / 100;
+      var tg = (parseFloat(document.getElementById('tg').value) || 0) / 100;
+      var wacc = (parseFloat(document.getElementById('wacc').value) || 0) / 100;
+      var debt = parseFloat(document.getElementById('debt').value) || 0;
+      var cash = parseFloat(document.getElementById('cash').value) || 0;
+      var shares = parseFloat(document.getElementById('shares').value) || 1;
+
+      var sumPv = 0;
+      var currentFcf = fcf;
+      for (var i = 1; i <= 5; i++) {
+        currentFcf = currentFcf * (1 + g);
+        sumPv += currentFcf / Math.pow(1 + wacc, i);
+      }
+
+      var terminalValue = (currentFcf * (1 + tg)) / (wacc - tg);
+      var pvTv = terminalValue / Math.pow(1 + wacc, 5);
+
+      var ev = sumPv + pvTv;
+      var equityValue = ev - debt + cash;
+      var sharePrice = equityValue / shares;
+
+      document.getElementById('targetPrice').innerText = '₹' + sharePrice.toFixed(2);
+      document.getElementById('evVal').innerText = '₹' + Math.round(ev).toLocaleString('en-IN') + ' Cr';
+      document.getElementById('eqVal').innerText = '₹' + Math.round(equityValue).toLocaleString('en-IN') + ' Cr';
+      document.getElementById('pvFcfVal').innerText = '₹' + Math.round(sumPv).toLocaleString('en-IN') + ' Cr';
+      document.getElementById('pvTvVal').innerText = '₹' + Math.round(pvTv).toLocaleString('en-IN') + ' Cr';
+    }
+
+    document.getElementById('calcBtn').addEventListener('click', executeValuation);
+    window.onload = executeValuation;
+  </script>
+</body>
+</html>
